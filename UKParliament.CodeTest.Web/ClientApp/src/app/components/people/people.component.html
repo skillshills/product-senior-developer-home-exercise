@@ -1,0 +1,10 @@
+<div class="person-container">
+    <button *ngFor="let person of people" (click)="navigateToPerson(person.id)" class="person">
+        <span class="person-name">{{ person.fullName }}</span>
+        <span class="person-party" (click)="deletePerson(person.id, $event)">delete</span>
+    </button>
+
+    <button (click)="navigateToPerson(null)" class="add-person-button">
+        Create New Person
+    </button>
+</div>

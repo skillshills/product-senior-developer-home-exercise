@@ -1,0 +1,37 @@
+// Variables for common styles
+$padding: 20px;
+$hover-bg: #f0f0f0;
+$button-bg: #007bff;
+
+.person-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .person,
+    .add-person-button {
+        padding: $padding;
+        border: 1px solid #ccc;
+        border-radius:  8px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $hover-bg;
+        }
+    }
+
+    .person {
+        display: flex;
+        justify-content: space-between;
+        background-color: lightblue;
+    }
+
+    .add-person-button {
+        background-color: $button-bg;
+        color: #ffffff;
+
+        &:hover {
+            color: $button-bg;
+        }
+    }
+}

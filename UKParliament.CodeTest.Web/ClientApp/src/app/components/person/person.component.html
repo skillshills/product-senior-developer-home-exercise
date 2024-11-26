@@ -1,0 +1,61 @@
+<div class="form-container">
+    <h1>{{ isUpdateMode ? 'Update Person' : 'Create Person' }}</h1>
+
+    <form [formGroup]="personForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="firstname">First Name:</label>
+        <input
+          id="firstname"
+          type="text"
+          formControlName="firstname"
+          required
+          placeholder="Enter first name"
+        />
+        <span *ngIf="firstname?.invalid && firstname?.touched">First Name is required</span>
+
+      </div>
+  
+      <div class="form-group">
+        <label for="lastname">Last Name:</label>
+        <input
+          id="lastname"
+          type="text"
+          formControlName="lastname"
+          required
+          placeholder="Enter last name"
+        />
+        <span *ngIf="lastname?.invalid && lastname?.touched">Last Name is required</span>
+      </div>
+  
+      <div class="form-group">
+        <label>Date of Birth:</label>
+        <div class="dob-group">
+          <select formControlName="day" required>
+            <option value="" disabled>Day</option>
+            <option *ngFor="let d of days" [value]="d">{{ d }}</option>
+          </select>
+          <select formControlName="month" required>
+            <option value="" disabled>Month</option>
+            <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+          </select>
+          <select formControlName="year" required>
+            <option value="" disabled>Year</option>
+            <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+          </select>
+        </div>
+        <span *ngIf="dobInvalid">Invalid Date of Birth</span>
+      </div>
+  
+      <div class="form-group">
+        <label for="departmentId">Department:</label>
+        <select id="departmentId" formControlName="departmentId" required>
+          <option value="0" disabled>Select department</option>
+          <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
+        </select>
+        <span *ngIf="departmentId?.invalid && departmentId?.touched">Department is required</span>
+      </div>
+  
+      <button type="submit">{{ isUpdateMode ? 'Update' : 'Create' }}</button>
+    </form>
+  </div>
+  
