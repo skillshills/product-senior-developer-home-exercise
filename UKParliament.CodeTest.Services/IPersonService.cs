@@ -6,9 +6,9 @@ public interface IPersonService
 {
     Task<Person> CreatePersonAsync(Person newPerson);
 
-    Task<int> GetPeopleTotalAsync();
+    Task<int> GetPersonTotalAsync();
     
-    Task<List<Person>> ListPeopleAsync();
+    Task<List<Person>> GetPersonListAsync();
 
     Task<Person?> GetPersonByIdAsync(int id);
 

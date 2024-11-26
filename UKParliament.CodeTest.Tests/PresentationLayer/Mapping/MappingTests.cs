@@ -18,7 +18,7 @@ public class MappingTests
         {
             Id = 1,
             Name = "HR",
-            People = new List<Person> { new Person(), new Person() }
+            People = [new Person(), new Person()]
         };
 
         // Act

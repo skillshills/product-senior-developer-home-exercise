@@ -25,21 +25,21 @@ public class PersonServiceTests
     }
 
     [Fact]
-    public async Task GetPeopleCountAsync_ShouldReturnPeopleCount()
+    public async Task GetPersonTotalAsync_ShouldReturnPersonTotal()
     {
         // Arrange
         var expectedCount = 5;
-        _personServiceMock.Setup(service => service.GetPeopleTotalAsync()).ReturnsAsync(expectedCount);
+        _personServiceMock.Setup(service => service.GetPersonTotalAsync()).ReturnsAsync(expectedCount);
 
         // Act
-        var actualCount = await _personServiceMock.Object.GetPeopleTotalAsync();
+        var actualCount = await _personServiceMock.Object.GetPersonTotalAsync();
 
         // Assert
         Assert.Equal(expectedCount, actualCount);
     }
 
     [Fact]
-    public async Task ListPeopleAsync_ShouldReturnListOfPeople()
+    public async Task GetPersonListAsync_ShouldReturnListOfPeople()
     {
         // Arrange
         var expectedPeople = new List<Person>
@@ -47,10 +47,10 @@ public class PersonServiceTests
             new Person { Id = 1, FirstName = "John", LastName = "Doe", DateOfBirth = new DateOnly(1990, 1, 1), DepartmentId = 1 },
             new Person { Id = 2, FirstName = "Jane", LastName = "Doe", DateOfBirth = new DateOnly(1992, 2, 2), DepartmentId = 2 }
         };
-        _personServiceMock.Setup(service => service.ListPeopleAsync()).ReturnsAsync(expectedPeople);
+        _personServiceMock.Setup(service => service.GetPersonListAsync()).ReturnsAsync(expectedPeople);
 
         // Act
-        var actualPeople = await _personServiceMock.Object.ListPeopleAsync();
+        var actualPeople = await _personServiceMock.Object.GetPersonListAsync();
 
         // Assert
         Assert.Equal(expectedPeople, actualPeople);

@@ -8,7 +8,7 @@ namespace UKParliament.CodeTest.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class PeopleController(IDepartmentService departmentService, IPersonService personService, IValidator<PersonViewModel> validator) : ControllerBase
+public class PersonController(IDepartmentService departmentService, IPersonService personService, IValidator<PersonViewModel> validator) : ControllerBase
 {
     private readonly IPersonService _personService = personService;
     private readonly IDepartmentService _departmentService = departmentService;
@@ -26,17 +26,17 @@ public class PeopleController(IDepartmentService departmentService, IPersonServi
 
     [Route("")]
     [HttpGet]
-    public async Task<ActionResult<PersonViewModel>> ListPeopleAsync()
+    public async Task<ActionResult<PersonViewModel>> GetPersonListAsync()
     {
-        var people = await _personService.ListPeopleAsync();
+        var people = await _personService.GetPersonListAsync();
         return Ok(people.Select(p => p.ToViewModel()).ToList());
     }
 
     [Route("total")]
     [HttpGet]
-    public async Task<ActionResult<PersonViewModel>> GetPeopleTotalAsync()
+    public async Task<ActionResult<PersonViewModel>> GetPersonTotalAsync()
     {
-        var total = await _personService.GetPeopleTotalAsync();
+        var total = await _personService.GetPersonTotalAsync();
         return Ok(new { total });
     }
 

@@ -11,19 +11,19 @@ using Xunit;
 
 namespace UKParliament.CodeTest.Tests.PresentationLayer.Controllers;
 
-public class PeopleControllerTests
+public class PersonControllerTests
 {
     private readonly Mock<IPersonService> _personServiceMock;
     private readonly Mock<IDepartmentService> _departmentServiceMock;
     private readonly Mock<IValidator<PersonViewModel>> _validatorMock;
-    private readonly PeopleController _controller;
+    private readonly PersonController _controller;
 
-    public PeopleControllerTests()
+    public PersonControllerTests()
     {
         _personServiceMock = new Mock<IPersonService>();
         _departmentServiceMock = new Mock<IDepartmentService>();
         _validatorMock = new Mock<IValidator<PersonViewModel>>();
-        _controller = new PeopleController(_departmentServiceMock.Object, _personServiceMock.Object, _validatorMock.Object);
+        _controller = new PersonController(_departmentServiceMock.Object, _personServiceMock.Object, _validatorMock.Object);
     }
 
     [Fact]
@@ -56,14 +56,14 @@ public class PeopleControllerTests
     }
 
     [Fact]
-    public async Task ListPeopleAsync_ReturnsOk_WithListOfPeople()
+    public async Task GetPersonListAsync_ReturnsOk_WithListOfPeople()
     {
         // Arrange
         var people = new List<Person> { new Person { Id = 1, FirstName = "John", LastName = "Doe" } };
-        _personServiceMock.Setup(service => service.ListPeopleAsync()).ReturnsAsync(people);
+        _personServiceMock.Setup(service => service.GetPersonListAsync()).ReturnsAsync(people);
 
         // Act
-        var result = await _controller.ListPeopleAsync();
+        var result = await _controller.GetPersonListAsync();
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -72,14 +72,14 @@ public class PeopleControllerTests
     }
 
     [Fact]
-    public async Task GetPeopleTotalAsync_ReturnsOk_WithTotalCount()
+    public async Task GetPersonTotalAsync_ReturnsOk_WithTotalCount()
     {
         // Arrange
         int expectedTotal = 42;
-        _personServiceMock.Setup(service => service.GetPeopleTotalAsync()).ReturnsAsync(expectedTotal);
+        _personServiceMock.Setup(service => service.GetPersonTotalAsync()).ReturnsAsync(expectedTotal);
 
         // Act
-        var result = await _controller.GetPeopleTotalAsync();
+        var result = await _controller.GetPersonTotalAsync();
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result.Result);

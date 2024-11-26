@@ -40,7 +40,7 @@ public class PersonService(PersonManagerContext context, ILogger<PersonService> 
         }
     }
 
-    public async Task<int> GetPeopleTotalAsync()
+    public async Task<int> GetPersonTotalAsync()
     {
         try
         {
@@ -48,12 +48,12 @@ public class PersonService(PersonManagerContext context, ILogger<PersonService> 
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while get count of people");
+            _logger.LogError(ex, "An error occurred while getting a count of people");
             throw;
         }
     }
 
-    public async Task<List<Person>> ListPeopleAsync()
+    public async Task<List<Person>> GetPersonListAsync()
     {
         try
         {
