@@ -1,61 +1,67 @@
-<div class="form-container">
-    <h1>{{ isUpdateMode ? 'Update Person' : 'Create Person' }}</h1>
+<section class="content-container" aria-labelledby="form-title">
+  <h2 id="form-title">{{ isUpdateMode ? 'Update Person' : 'Create Person' }}</h2>
 
-    <form [formGroup]="personForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="firstname">First Name:</label>
-        <input
-          id="firstname"
-          type="text"
-          formControlName="firstname"
-          required
-          placeholder="Enter first name"
-        />
-        <span *ngIf="firstname?.invalid && firstname?.touched">First Name is required</span>
+  <form [formGroup]="personForm" (ngSubmit)="onSubmit()" class="person-form" id="personForm" aria-labelledby="form-title">
+    <div class="form-group">
+      <label for="firstname">First Name: <span class="required">*</span></label>
 
-      </div>
-  
-      <div class="form-group">
-        <label for="lastname">Last Name:</label>
-        <input
-          id="lastname"
-          type="text"
-          formControlName="lastname"
-          required
-          placeholder="Enter last name"
-        />
-        <span *ngIf="lastname?.invalid && lastname?.touched">Last Name is required</span>
-      </div>
-  
-      <div class="form-group">
-        <label>Date of Birth:</label>
-        <div class="dob-group">
-          <select formControlName="day" required>
-            <option value="" disabled>Day</option>
-            <option *ngFor="let d of days" [value]="d">{{ d }}</option>
-          </select>
-          <select formControlName="month" required>
-            <option value="" disabled>Month</option>
-            <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
-          </select>
-          <select formControlName="year" required>
-            <option value="" disabled>Year</option>
-            <option *ngFor="let y of years" [value]="y">{{ y }}</option>
-          </select>
-        </div>
-        <span *ngIf="dobInvalid">Invalid Date of Birth</span>
-      </div>
-  
-      <div class="form-group">
-        <label for="departmentId">Department:</label>
-        <select id="departmentId" formControlName="departmentId" required>
-          <option value="0" disabled>Select department</option>
-          <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
+      <input  id="firstname"
+              type="text"
+              formControlName="firstname"
+              required
+              placeholder="e.g John"
+              aria-required="true" />
+
+      <span class="validation-error" *ngIf="formControlIsValid('firstname')">First Name is required</span>
+    </div>
+
+    <div class="form-group">
+      <label for="lastname">Last Name: <span class="required">*</span></label>
+
+      <input  id="lastname"
+              type="text"
+              formControlName="lastname"
+              required
+              placeholder="e.g Doe"
+              aria-required="true" />
+
+      <span class="validation-error" *ngIf="formControlIsValid('lastname')">Last Name is required</span>
+    </div>
+
+    <div class="form-group">
+      <label>Date of Birth: <span class="required">*</span></label>
+
+      <div class="dob-group">
+        <select formControlName="day" required aria-required="true">
+          <option value="" disabled>Day</option>
+          <option *ngFor="let d of days" [value]="d">{{ d }}</option>
         </select>
-        <span *ngIf="departmentId?.invalid && departmentId?.touched">Department is required</span>
+
+        <select formControlName="month" required aria-required="true">
+          <option value="" disabled>Month</option>
+          <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+        </select>
+
+        <select formControlName="year" required aria-required="true">
+          <option value="" disabled>Year</option>
+          <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+        </select>
       </div>
-  
-      <button type="submit">{{ isUpdateMode ? 'Update' : 'Create' }}</button>
-    </form>
-  </div>
-  
+
+      <span class="validation-error" *ngIf="dobInvalid">Invalid Date of Birth</span>
+    </div>
+
+    <div class="form-group">
+      <label for="departmentId">Department: <span class="required">*</span></label>
+
+      <select id="departmentId" formControlName="departmentId" required>
+        <option value="" disabled>Select department</option>
+        <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
+      </select>
+
+      <span class="validation-error" *ngIf="formControlIsValid('departmentId')">Department is required</span>
+    </div>
+    
+    <button type="submit" class="primary-btn" title="{{ isUpdateMode ? 'Update' : 'Create' }}">{{ isUpdateMode ? 'Update' : 'Create' }}</button>
+  </form>
+</section>

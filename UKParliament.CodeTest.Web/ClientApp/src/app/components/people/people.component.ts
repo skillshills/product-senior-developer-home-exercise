@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { PersonService } from '../../services/person.service';
 import { PersonViewModel } from '../../models/person-view-model';
+import { PersonService } from '../../services/person.service';
 
 @Component({
   selector: 'app-people',
   templateUrl: './people.component.html',
   styleUrl: './people.component.scss'
 })
-export class PeopleComponent implements OnInit {
+export class PeopleComponent {
   people: PersonViewModel[] = [];
 
   constructor(private personService: PersonService, private router: Router) { }

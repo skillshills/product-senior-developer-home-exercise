@@ -1,37 +1,68 @@
-// Variables for common styles
-$padding: 20px;
-$hover-bg: #f0f0f0;
-$button-bg: #007bff;
+@import 'variables';
 
-.person-container {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-
-    .person,
-    .add-person-button {
-        padding: $padding;
-        border: 1px solid #ccc;
-        border-radius:  8px;
-        cursor: pointer;
-
-        &:hover {
-            background-color: $hover-bg;
-        }
+section.content-container {
+    .no-records-message {
+        font-size: 1rem;
+        color: #555;
+        border: 1px solid #ddd;
+        background-color: #f9f9f9;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
-    .person {
-        display: flex;
-        justify-content: space-between;
-        background-color: lightblue;
-    }
+    .person-list {
+        list-style: none;
+        padding: 0;
 
-    .add-person-button {
-        background-color: $button-bg;
-        color: #ffffff;
+        a {
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
 
-        &:hover {
-            color: $button-bg;
+            &:hover {
+                background: darken(#f9f9f9, 10%);
+            }
+
+            &:focus {
+                outline: 2px solid darken(#f9f9f9, 15%);
+            }
+
+            .person-name {
+                font-size: 1rem;
+            }
+
+            .delete-btn {
+                background: #e74c3c;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                padding: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+
+                svg {
+                    fill: #fff;
+                    width: 24px;
+                    height: 24px;
+                }
+
+                &:hover {
+                    background: darken(#e74c3c, 10%);
+                }
+
+                &:focus {
+                    outline: 2px solid darken(#e74c3c, 15%);
+                }
+            }
         }
     }
 }

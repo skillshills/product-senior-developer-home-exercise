@@ -1,0 +1,16 @@
+@import 'variables';
+@import 'mixins';
+
+footer {
+    background-color: $primary-color;
+    color: #fff;
+    padding: $spacing-unit;
+
+    .container {
+        @include container;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+}

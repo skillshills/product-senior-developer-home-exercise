@@ -8,17 +8,21 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
-import { PersonComponent } from './components/person/person.component';
 import { PeopleComponent } from './components/people/people.component';
+import { PersonComponent } from './components/person/person.component';
 
 registerLocaleData(locale, 'en-GB');
 
 @NgModule({ declarations: [
         AppComponent,
+        HeaderComponent,
+        FooterComponent,
         HomeComponent,
-        PersonComponent,
-        PeopleComponent
+        PeopleComponent,
+        PersonComponent
     ],
     bootstrap: [AppComponent], 
     imports: 
@@ -29,7 +33,6 @@ registerLocaleData(locale, 'en-GB');
         ReactiveFormsModule,
         RouterModule.forRoot([
             { path: '', component: HomeComponent, pathMatch: 'full' },
-            { path: 'people', component: PeopleComponent },
             { path: 'person', component: PersonComponent },
             { path: 'person/:id', component: PersonComponent }
         ])

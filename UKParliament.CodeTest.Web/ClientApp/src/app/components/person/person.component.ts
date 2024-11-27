@@ -98,26 +98,17 @@ export class PersonComponent implements OnInit {
     });
   }
 
-  get firstname() {
-    return this.personForm.get('firstname');
-  }
-
-  get lastname() {
-    return this.personForm.get('lastname');
-  }
-
-  get departmentId() {
-    return this.personForm.get('departmentId');
-  }
+  formControlIsValid(fieldName: string) {
+    return this.personForm.get(fieldName)?.invalid && this.personForm.get(fieldName)?.touched;
+  }  
 
   validateDOB() {
-    const { day, month, year } = this.personForm.value;
-  
-    if (!day || !month || !year) {
+    if (this.formControlIsValid('day') || this.formControlIsValid('month') || this.formControlIsValid('year')) {
       this.dobInvalid = true;
       return;
     }
-  
+
+    const { day, month, year } = this.personForm.value;
     const dateOfBirth = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
   
     if (!this.isValidDate(dateOfBirth)) {
@@ -146,7 +137,16 @@ export class PersonComponent implements OnInit {
     );
   }
 
+  // Mark all form controls as touched to trigger validation messages
+  markAllAsTouched(): void {
+    Object.values(this.personForm.controls).forEach(control => {
+      control.markAsTouched();
+    });
+  }  
+
   onSubmit() {
+    this.markAllAsTouched();
+
     if (this.personForm.valid && !this.dobInvalid) {
       const { day, month, year, ...rest } = this.personForm.value;
       const dateOfBirth = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -156,13 +156,13 @@ export class PersonComponent implements OnInit {
         // Call update service
         this.personService.updatePerson(this.personId, personData).subscribe(() => {
           console.log('Person updated successfully!');
-          this.router.navigate(['/people']);
+          this.router.navigate(['/']);
         });
       } else {
         // Call create service
         this.personService.createPerson(personData).subscribe(() => {
           console.log('Person created successfully!');
-          this.router.navigate(['/people']); // Navigate to the list page or elsewhere
+          this.router.navigate(['/']); // Navigate to the list page or elsewhere
         });
       }
     }

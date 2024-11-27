@@ -1,58 +1,64 @@
-.form-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #f9f9f9;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input, select, button {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .dob-group {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  
-  .dob-group select {
-    width: 32%;
-  }
-  
-  button {
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  span {
-    color: red;
-    font-size: 12px;
-  }
-  
+@import 'variables';
+
+section.content-container {
+
+    .form-group {
+        margin-bottom: $spacing-unit;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-unit / 2;
+
+        label {
+            display: block;
+            font-weight: bold;
+
+            .required {
+                color: $error-color;
+            }
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.9rem;
+
+            &:focus {
+                border-color: $primary-color;
+                outline: none;
+                box-shadow: 0 0 5px rgba($primary-color, 0.5);
+            }
+        }
+
+        .dob-group {
+            display: flex;
+
+            @media (min-width: 320px) {
+                flex-direction: row;
+                justify-content: space-between;
+
+                select {
+                    width: 32%;
+                }
+            }
+
+            @media (max-width: 320px) {
+                flex-direction: column;
+
+                select {
+                    width: 100%;
+                    margin-top: $spacing-unit;
+                }
+            }
+        }
+
+        .validation-error {
+            color: $error-color;
+            font-size: 0.9rem;
+            margin-top: $spacing-unit / 2;
+            display: block;
+        }
+    }
+}
