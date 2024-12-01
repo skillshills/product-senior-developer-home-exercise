@@ -1,33 +1,53 @@
-<section class="content-container" aria-labelledby="person-list-title">
-    <h2 id="person-list-title">List of people</h2>
+<div *ngIf="loadingData; else displayPeople" class="message-container loading-message">
+    <app-spinner message="Getting data"></app-spinner>
+</div>
 
-    <div class="person-list" *ngIf="people && people.length > 0; else noRecords">
-        <a [routerLink]="['/person', person.id]" *ngFor="let person of people">
-            <span class="person-name">{{ person.fullName }}</span>
+<ng-template #displayPeople>
+    <section class="content-container" aria-labelledby="person-list-title">
+        <h2 id="person-list-title">List of people</h2>
 
-            <button (click)="deletePerson(person.id, $event)" class="delete-btn" title="Delete {{ person.fullName }}">
-                <svg id="Trash" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                    fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                        clip-rule="evenodd" />
-                </svg>
+        <div class="person-list" *ngIf="people && people.length > 0; else noRecords">
+            <a [routerLink]="['/person', person.id]" *ngFor="let person of people">
+                <span class="person-name">{{ person.fullName }}</span>
+
+                <button type="button" (click)="deletePersonBtnClick(person, $event)" class="delete-btn" title="Delete {{ person.fullName }}">
+                    <svg id="Trash" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </a>
+        </div>
+
+        <ng-template #noRecords>
+            <p class=" message-container no-records-message">No records found.</p>
+        </ng-template>
+
+        <button type="button" (click)="navigateToPerson(null)" class="primary-btn" title="Create new person">
+            Create new person
+        </button>
+    </section>
+</ng-template>
+
+<section class="delete-confirm-container" aria-labelledby="person-list-title" *ngIf="showDeleteConfirmation && personToDelete">
+    <div class="content-container">
+        <h2>Delete confirmation</h2>
+
+        <p class="confirm-text">
+            Are you sure you want to delete '{{personToDelete.firstName}}' ?
+        </p>
+
+        <div class="btn-container">
+            <button type="button" (click)="deletePerson(personToDelete)" class="primary-btn" title="Delete {{ personToDelete.fullName }}">
+                Yes
             </button>
-        </a>
+    
+            <button type="button" (click)="cancelDelete()" class="danger-btn" title="Create new person">
+                No
+            </button>
+        </div>
+
     </div>
-
-    <ng-template #noRecords>
-        <p class="no-records-message">No records found.</p>
-    </ng-template>
-
-    <button (click)="navigateToPerson(null)" class="primary-btn" title="Create new person">
-        Create new person
-    </button>
 </section>
-
-<!-- <svg id="AddUser" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="-0.5 -0.5 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M1.25 13.125a5 5 0 0 1 8.3075 -3.75" stroke-width="1"></path>
-    <path d="M3.125 5a3.125 3.125 0 1 0 6.25 0A3.125 3.125 0 1 0 3.125 5" stroke-width="1"></path>
-    <path d="M11.875 10v3.75" stroke-width="1"></path>
-    <path d="M13.75 11.875h-3.75" stroke-width="1"></path>
-  </svg> -->

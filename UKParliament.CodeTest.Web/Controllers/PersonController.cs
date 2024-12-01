@@ -59,6 +59,7 @@ public class PersonController(IDepartmentService departmentService, IPersonServi
     [HttpPut]
     public async Task<ActionResult> UpdatePersonAsync(int id, PersonViewModel personViewModel)
     {
+        
         var validationResult = await validator.ValidateAsync(personViewModel);
         if (!validationResult.IsValid)
             return BadRequest(validationResult.ToDictionary());

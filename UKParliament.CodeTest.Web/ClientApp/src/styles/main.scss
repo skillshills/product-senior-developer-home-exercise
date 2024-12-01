@@ -1,0 +1,118 @@
+@import 'variables';
+@import 'mixins';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: $font-stack;
+  font-size: $font-size-base;
+  background-color: $background-color;
+  color: $text-color;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding: $spacing-unit;
+
+  .container {
+    @include container;
+  }
+}
+
+.content-container {
+  background: #fff;
+  padding: $spacing-unit;
+  border-radius: calc($spacing-unit / 2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: grid;
+  row-gap: 0.75rem;
+
+  h2 {
+    font-size: 1.3rem;
+    color: $primary-color;
+    border-bottom: 1px dotted $primary-color;
+    padding-bottom: calc($spacing-unit / 2);
+  }
+}
+
+button.primary-btn, button.danger-btn, button.cancel-btn {
+  width: 100%;
+  padding: $spacing-unit;
+  border: none;
+  border-radius: calc($spacing-unit / 4);
+  font-size: 16px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.primary-btn {
+  background: $primary-action-color;
+  color: #ffffff;
+
+  &:hover {
+    background: darken($primary-action-color, 10%);
+  }
+
+  &:focus {
+    outline: 2px solid darken($primary-action-color, 15%);
+  }
+}
+
+button.danger-btn {
+  background: $danger-action-color;
+  color: #fff;
+
+  &:hover {
+    background: darken($danger-action-color, 10%);
+  }
+
+  &:focus {
+    outline: 2px solid darken($danger-action-color, 15%);
+  }
+}
+
+button.cancel-btn {
+  background: $cancel-action-color;
+  color: #fff;
+
+  &:hover {
+    background: darken($cancel-action-color, 10%);
+  }
+
+  &:focus {
+    outline: 2px solid darken($cancel-action-color, 15%);
+  }
+}
+
+section.navigation {
+  margin-top: $spacing-unit;
+
+  a {
+      color: $primary-color;
+      text-decoration: underline;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover {
+          text-decoration: none;
+      }
+  }
+}

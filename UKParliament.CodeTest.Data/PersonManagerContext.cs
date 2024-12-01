@@ -50,6 +50,14 @@ public class PersonManagerContext(DbContextOptions<PersonManagerContext> options
                         LastName = "Johnson",
                         DateOfBirth = new DateOnly(2000, 3, 10),
                         DepartmentId = 3
+                    },
+                    new Person
+                    {
+                        Id = 5,
+                        FirstName = "Harry",
+                        LastName = "Hill",
+                        DateOfBirth = new DateOnly(1980, 8, 24),
+                        DepartmentId = 2
                     });
     }
 

@@ -1,6 +1,5 @@
 export interface DepartmentViewModel {
-    id: number;
-    name: string;
-    totalPeople: number 
-  }
-  
+  id: number;
+  name: string;
+  totalPeople: number
+}

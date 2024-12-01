@@ -1,15 +1,23 @@
 @import 'variables';
 
 section.content-container {
-    .no-records-message {
+    .message-container {
         font-size: 1rem;
-        color: #555;
         border: 1px solid #ddd;
-        background-color: #f9f9f9;
         padding: 10px 15px;
         margin-bottom: 10px;
         border-radius: 4px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .no-records-message {
+        color: #555;
+        background-color: #f9f9f9;
+    }
+
+    .error-message {
+        color: #fff;
+        background-color: #e74c3c;
     }
 
     .person-list {
@@ -27,6 +35,7 @@ section.content-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            text-decoration: none;
 
             &:hover {
                 background: darken(#f9f9f9, 10%);
@@ -63,6 +72,45 @@ section.content-container {
                     outline: 2px solid darken(#e74c3c, 15%);
                 }
             }
+        }
+    }
+}
+
+section.delete-confirm-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+    color: $primary-color;
+    font-size: 1.5rem;
+
+    .content-container 
+    {
+        margin-top: 16px;
+        max-width: 400px;
+        background: #fff;
+        padding: $spacing-unit;
+        border-radius: calc($spacing-unit / 2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: grid;
+        row-gap: 0.75rem;
+
+        .confirm-text {
+            font-size: 1.0rem;
+            color: $primary-color;
+        }
+
+        .btn-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
         }
     }
 }

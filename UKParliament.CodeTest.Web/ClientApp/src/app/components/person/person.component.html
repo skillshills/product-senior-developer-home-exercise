@@ -1,67 +1,72 @@
-<section class="content-container" aria-labelledby="form-title">
-  <h2 id="form-title">{{ isUpdateMode ? 'Update Person' : 'Create Person' }}</h2>
+<div *ngIf="loadingData; else displayPeople" class="message-container loading-message">
+  <app-spinner message="Getting person"></app-spinner>
+</div>
 
-  <form [formGroup]="personForm" (ngSubmit)="onSubmit()" class="person-form" id="personForm" aria-labelledby="form-title">
-    <div class="form-group">
-      <label for="firstname">First Name: <span class="required">*</span></label>
+<ng-template #displayPeople>
+  <section class="content-container" aria-labelledby="form-title">
+    <h2 id="form-title">{{ isUpdateMode ? 'Update Person' : 'Create Person' }}</h2>
 
-      <input  id="firstname"
-              type="text"
-              formControlName="firstname"
-              required
-              placeholder="e.g John"
-              aria-required="true" />
+    <form [formGroup]="personForm" (ngSubmit)="onSubmit()" class="person-form" id="personForm"
+      aria-labelledby="form-title">
+      <div class="form-group">
+        <label for="firstname">First Name: <span class="required">*</span></label>
 
-      <span class="validation-error" *ngIf="formControlIsValid('firstname')">First Name is required</span>
-    </div>
+        <input id="firstname" type="text" formControlName="firstname" required placeholder="e.g John"
+          aria-required="true" />
 
-    <div class="form-group">
-      <label for="lastname">Last Name: <span class="required">*</span></label>
-
-      <input  id="lastname"
-              type="text"
-              formControlName="lastname"
-              required
-              placeholder="e.g Doe"
-              aria-required="true" />
-
-      <span class="validation-error" *ngIf="formControlIsValid('lastname')">Last Name is required</span>
-    </div>
-
-    <div class="form-group">
-      <label>Date of Birth: <span class="required">*</span></label>
-
-      <div class="dob-group">
-        <select formControlName="day" required aria-required="true">
-          <option value="" disabled>Day</option>
-          <option *ngFor="let d of days" [value]="d">{{ d }}</option>
-        </select>
-
-        <select formControlName="month" required aria-required="true">
-          <option value="" disabled>Month</option>
-          <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
-        </select>
-
-        <select formControlName="year" required aria-required="true">
-          <option value="" disabled>Year</option>
-          <option *ngFor="let y of years" [value]="y">{{ y }}</option>
-        </select>
+        <span class="validation-error" *ngIf="formControlIsValid('firstname')">First Name is required</span>
       </div>
 
-      <span class="validation-error" *ngIf="dobInvalid">Invalid Date of Birth</span>
-    </div>
+      <div class="form-group">
+        <label for="lastname">Last Name: <span class="required">*</span></label>
 
-    <div class="form-group">
-      <label for="departmentId">Department: <span class="required">*</span></label>
+        <input id="lastname" type="text" formControlName="lastname" required placeholder="e.g Doe"
+          aria-required="true" />
 
-      <select id="departmentId" formControlName="departmentId" required>
-        <option value="" disabled>Select department</option>
-        <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
-      </select>
+        <span class="validation-error" *ngIf="formControlIsValid('lastname')">Last Name is required</span>
+      </div>
 
-      <span class="validation-error" *ngIf="formControlIsValid('departmentId')">Department is required</span>
-    </div>
-    
-    <button type="submit" class="primary-btn" title="{{ isUpdateMode ? 'Update' : 'Create' }}">{{ isUpdateMode ? 'Update' : 'Create' }}</button>
-  </form>
-</section>
+      <div class="form-group">
+        <label>Date of Birth: <span class="required">*</span></label>
+
+        <div class="dob-group">
+          <select formControlName="day" required aria-required="true" aria-label="day">
+            <option value="" disabled>Day</option>
+            <option *ngFor="let d of days" [value]="d">{{ d }}</option>
+          </select>
+
+          <select formControlName="month" required aria-required="true" aria-label="month">
+            <option value="" disabled>Month</option>
+            <option *ngFor="let m of months" [value]="m.value">{{ m.name }}</option>
+          </select>
+
+          <select formControlName="year" required aria-required="true" aria-label="year">
+            <option value="" disabled>Year</option>
+            <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+          </select>
+        </div>
+
+        <span class="validation-error" *ngIf="dobInvalid">Invalid Date of Birth</span>
+      </div>
+
+      <div class="form-group">
+        <label for="departmentId">Department: <span class="required">*</span></label>
+
+        <select id="departmentId" formControlName="departmentId" required aria-label="Department">
+          <option value="" disabled>Select department</option>
+          <option *ngFor="let dept of departments" [value]="dept.id">{{ dept.name }}</option>
+        </select>
+
+        <span class="validation-error" *ngIf="formControlIsValid('departmentId')">Department is required</span>
+      </div>
+
+      <button type="submit" class="primary-btn" title="{{ isUpdateMode ? 'Update' : 'Create' }}">{{ isUpdateMode ?
+        'Update' : 'Create' }}</button>
+    </form>
+  </section>
+
+  <section class="navigation">
+    <a (click)="backToHome()">Back</a>
+  </section>
+
+</ng-template>

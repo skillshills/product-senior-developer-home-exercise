@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { filter, finalize } from 'rxjs/operators';
+import { HttpResponse } from '@angular/common/http';
 
 import { PersonService } from 'src/app/services/person.service';
 import { DepartmentService } from 'src/app/services/department.service';
 import { DepartmentViewModel } from 'src/app/models/department-view-model';
+import { LoadingOverlayService } from '../../services/loading-overlay.service';
+import { ToastService } from '../../services/toast.service';
+import { PersonViewModel } from 'src/app/models/person-view-model';
 
 @Component({
   selector: 'app-person-form',
@@ -14,9 +19,9 @@ import { DepartmentViewModel } from 'src/app/models/department-view-model';
 export class PersonComponent implements OnInit {
   personForm: FormGroup;
   isUpdateMode: boolean = false;
+  loadingData: boolean = false;
   personId: number | null = null;
   departments: DepartmentViewModel[] = [];
-  //departments = ['HR', 'Finance', 'Engineering', 'Marketing'];
   days: number[] = [];
   months = Array.from({ length: 12 }, (_, i) => {
     const date = new Date(0, i); // Create a date for each month (0-based index)
@@ -30,7 +35,9 @@ export class PersonComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private personService: PersonService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private loadingOverlayService: LoadingOverlayService,
+    private toastService: ToastService
   ) {
     this.personForm = this.fb.group({
       firstname: ['', Validators.required],
@@ -49,10 +56,8 @@ export class PersonComponent implements OnInit {
       this.personId = params['id'];
       this.isUpdateMode = !!this.personId;
 
-      if (this.isUpdateMode) {
-        if (this.personId) {
+      if (this.isUpdateMode && this.personId) {
           this.loadPersonData(this.personId);
-        }
       }
     });
 
@@ -76,31 +81,38 @@ export class PersonComponent implements OnInit {
     });
   }
 
-  loadPersonData(id: number): void {
-    this.personService.getById(id).subscribe({
-      next: (data) => {
-        // Split the DOB into day, month, and year
-        const [year, month, day] = data.dateOfBirth.split('-').map(Number);
+  loadPersonData(id: number) {
+    this.loadingData = true;
 
-        // Populate the form
-        this.personForm.patchValue({
-          firstname: data.firstName,
-          lastname: data.lastName,
-          departmentId: data.departmentId,
-          day: day,
-          month: month,
-          year: year
-        });
-      },
-      error: (err) => {
-        console.error('Error fetching person data:', err);
-      }
-    });
+    setTimeout(() => {
+      this.personService.getById(id).pipe(
+        filter((response: HttpResponse<any>) => response.status === 200),
+        finalize(() => this.loadingData = false)
+      ).subscribe({
+        next: (data) => {
+          this.personForm.patchValue({
+            firstname: data.body.firstName,
+            lastname: data.body.lastName,
+            departmentId: data.body.departmentId,
+            day: new Date(data.body.dateOfBirth).getDate(),
+            month: new Date(data.body.dateOfBirth).getMonth() + 1,
+            year: new Date(data.body.dateOfBirth).getFullYear()
+          });
+        },
+        error: (err) => {
+          if (err.status === 404) {
+            this.router.navigate([`/person/${id}/not-found`]);
+          } else {
+            this.toastService.addToast('Error loading person data', 'error', false);
+          }
+        }
+      });
+    }, 400);
   }
 
   formControlIsValid(fieldName: string) {
     return this.personForm.get(fieldName)?.invalid && this.personForm.get(fieldName)?.touched;
-  }  
+  }
 
   validateDOB() {
     if (this.formControlIsValid('day') || this.formControlIsValid('month') || this.formControlIsValid('year')) {
@@ -110,15 +122,15 @@ export class PersonComponent implements OnInit {
 
     const { day, month, year } = this.personForm.value;
     const dateOfBirth = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-  
+
     if (!this.isValidDate(dateOfBirth)) {
       this.dobInvalid = true;
       return;
     }
-  
+
     const dob = new Date(dateOfBirth);
     const today = new Date();
-  
+
     this.dobInvalid = dob >= today;
   }
 
@@ -142,7 +154,7 @@ export class PersonComponent implements OnInit {
     Object.values(this.personForm.controls).forEach(control => {
       control.markAsTouched();
     });
-  }  
+  }
 
   onSubmit() {
     this.markAllAsTouched();
@@ -152,19 +164,54 @@ export class PersonComponent implements OnInit {
       const dateOfBirth = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const personData = { ...rest, dateOfBirth };
 
+      this.loadingOverlayService.show(this.isUpdateMode ? 'Updating' : 'Creating');
+
       if (this.isUpdateMode && this.personId) {
         // Call update service
-        this.personService.updatePerson(this.personId, personData).subscribe(() => {
-          console.log('Person updated successfully!');
-          this.router.navigate(['/']);
-        });
+        personData.id = this.personId;
+        this.updatePerson(personData);
       } else {
         // Call create service
-        this.personService.createPerson(personData).subscribe(() => {
-          console.log('Person created successfully!');
-          this.router.navigate(['/']); // Navigate to the list page or elsewhere
-        });
+        this.createPerson(personData);
       }
     }
+  }
+
+  updatePerson(personData: PersonViewModel) {
+    setTimeout(() => {
+      this.personService.updatePerson(personData.id, personData).pipe(
+        filter((response: HttpResponse<any>) => response.status === 204),
+        finalize(() => this.loadingOverlayService.hide())
+      ).subscribe({
+        next: () => {
+          this.toastService.addToast('Person updated successfully', 'success');
+          this.router.navigate(['/']);
+        },
+        error: () => {
+          this.toastService.addToast('Error updating person', 'error', false);
+        }
+      });
+    }, 400);
+  }
+
+  createPerson(personData: PersonViewModel) {
+    setTimeout(() => {
+      this.personService.createPerson(personData).pipe(
+        filter((response: HttpResponse<any>) => response.status === 201),
+        finalize(() => this.loadingOverlayService.hide())
+      ).subscribe({
+        next: () => {
+          this.toastService.addToast('Person created successfully', 'success');
+          this.router.navigate(['/']);
+        },
+        error: () => {
+          this.toastService.addToast('Error creating person', 'error', false);
+        }
+      });
+    }, 400);
+  }  
+
+  backToHome() {
+    this.router.navigate(['/']);
   }
 }

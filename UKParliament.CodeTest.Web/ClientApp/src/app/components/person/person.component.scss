@@ -2,11 +2,22 @@
 
 section.content-container {
 
+    .error-message {
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        color: #fff;
+        background-color: #e74c3c;
+    }
+
     .form-group {
         margin-bottom: $spacing-unit;
         display: flex;
         flex-direction: column;
-        gap: $spacing-unit / 2;
+        gap: calc($spacing-unit / 2);
 
         label {
             display: block;
@@ -57,7 +68,7 @@ section.content-container {
         .validation-error {
             color: $error-color;
             font-size: 0.9rem;
-            margin-top: $spacing-unit / 2;
+            margin-top: calc($spacing-unit / 2);
             display: block;
         }
     }

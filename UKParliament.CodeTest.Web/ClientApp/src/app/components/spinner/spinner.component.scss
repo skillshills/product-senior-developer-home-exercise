@@ -1,0 +1,59 @@
+@import 'variables';
+
+.container {
+    margin-top: 16px;
+    max-width: 400px;
+    background: #fff;
+    padding: $spacing-unit;
+    border-radius: calc($spacing-unit / 2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: grid;
+    row-gap: 0.75rem;
+
+    .spinner {
+        text-align: center;
+
+        svg {
+            width: 75%;
+            height: 75%;
+            color: $primary-color;
+
+            animation: spin 1s linear infinite;
+
+            @keyframes spin {
+                from {
+                    transform: rotate(0deg);
+                }
+
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .opacity-25 {
+                opacity: 0.2;
+            }
+
+            .opacity-75 {
+                opacity: 0.75;
+            }
+        }
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+
+    .loading-text {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+}
