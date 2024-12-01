@@ -1,4 +1,4 @@
-# UK Parliament - Product Team Home Exercise for Senior Developer
+# UK Parliament - Product Team Home Exercise
 
 ## Dependencies
 Please ensure you have the following installed:
