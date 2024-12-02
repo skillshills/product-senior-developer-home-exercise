@@ -39,7 +39,7 @@ export class PeopleComponent {
         next: (data) => (this.people = data.body),
         error: () => {
           this.toastService.addToast('Error loading people', 'error');
-        },
+        }
       });
 
       this.loadingData = false;
